@@ -3,9 +3,9 @@ const mongoose = require("mongoose");
 const List = mongoose.model(   //creating schema for list
   "List",
   new mongoose.Schema({
-    seq: String,
-    name: String,
+    taskName: String,
     status: String,
+    username: String,
   })
 );
 
