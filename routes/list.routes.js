@@ -1,5 +1,5 @@
 var express = require('express');
-var controller = require('../controller/list.controller');
+var controller = require('../controller/List/list.controller');
 var router = express.Router();
 var authCheck = require('../middlewares/authjwt');
 
@@ -13,6 +13,10 @@ router.get('/getListItems', [authCheck.CheckToken],controller.getListItems);
 
 router.post('/deleteItem', [authCheck.CheckToken],controller.deleteItem);
 
-router.post('/updateItem', [authCheck.CheckToken],controller.updateItem);
+router.post('/updateStatus', [authCheck.CheckToken],controller.updateStatus);
+
+router.post('/updatePriority', [authCheck.CheckToken],controller.updatePriority);
+
+router.post('/updateDeadline', [authCheck.CheckToken],controller.updateDeadline);
 
 module.exports = router;

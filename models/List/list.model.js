@@ -6,6 +6,8 @@ const List = mongoose.model(   //creating schema for list
     taskName: String,
     status: String,
     username: String,
+    priority: String,
+    deadline: Date,
   })
 );
 

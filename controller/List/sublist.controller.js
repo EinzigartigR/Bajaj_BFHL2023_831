@@ -1,12 +1,14 @@
-const List = require('../models/list.model');
+const Sublist = require('../../models/List/sublist.model');
 require('dotenv').config();
 
 
-exports.setItems = async function(req,res){
-    const list = await List.create({
-        taskName : req.body.taskName,
-        status : req.body.status,
+exports.setSubItems = async function(req,res){
+    const sublist = await Sublist.create({
         username : req.body.username,
+        taskName : req.body.taskName,
+        subtaskName : req.body.subtaskName,
+        status : req.body.status,
+
     }, (err)=>{
         if(err){
             res.status(500).send(err);
@@ -15,8 +17,8 @@ exports.setItems = async function(req,res){
     })
 }
 
-exports.getListItems = async function(req,res){
-    const data = await List.find().sort({
+exports.getSublistItems = async function(req,res){
+    const data = await Sublist.find().sort({
         createdAt : -1
     }, (err,list) => {
         if(err){
@@ -31,8 +33,8 @@ exports.getListItems = async function(req,res){
 
 }
 
-exports.deleteItem = async function(req,res){
-    const data = await List.findOneAndDelete({username:req.body.username, taskName:req.body.taskName}, (err,user)=>{
+exports.deleteSublistItem = async function(req,res){
+    const data = await Sublist.findOneAndDelete({username:req.body.username, taskName:req.body.taskName , subtaskName: req.body.subtaskName}, (err,user)=>{
         if(err){
             res.status(500).send(err);
         }
@@ -43,8 +45,8 @@ exports.deleteItem = async function(req,res){
     })
 }
 
-exports.updateItem = function(req,res){
- List.findOneAndUpdate({username: req.body.username , taskName: req.body.taskName},{$set : {status:req.body.status}}, (err,user) => {
+exports.updateSubslistStatus = function(req,res){
+ List.findOneAndUpdate({username: req.body.username , taskName: req.body.taskName , subtaskName: req.body.subtaskName},{$set : {status:req.body.status}}, (err,user) => {
     if(err){
         res.status(500).send(err);
     }
