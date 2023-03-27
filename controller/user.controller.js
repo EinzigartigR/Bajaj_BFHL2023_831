@@ -31,11 +31,11 @@ exports.signIn = (req, res) => {
 
 function OTP() {
     const digits = '0123456789';
-    let OTP = '';
+    let otp = '';
     for (let i = 0; i < 6; i++) {
-        OTP += digits[Math.floor(Math.random() * 10)];
+        otp += digits[Math.floor(Math.random() * digits.length)];
     }
-    return OTP;
+    return otp;
 }
 
 exports.generateOTP = (req, res) => {
@@ -54,9 +54,7 @@ exports.generateOTP = (req, res) => {
 }
 
 exports.validateOTP = (req, res) => {
-    console.log(otp);
-    console.log(req.body)
-    if (otp == 'undefined' || otp === null || otp == '') {
+    if (!otp) {
         code = 401;
         message = "Please call the generateOTP API first"
     }
