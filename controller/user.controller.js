@@ -9,6 +9,7 @@ exports.signUp = async function (req, res) {
     const user = await new User({
         username: req.body.username,
         email: req.body.email,
+        phone: req.body.phone,
         password: bcrypt.hashSync(req.body.password, 8),
     })
     user.save(err => {
@@ -39,18 +40,31 @@ function OTP() {
 }
 
 exports.generateOTP = (req, res) => {
-    otp = OTP();
-    client.messages
-        .create({
-            body: 'Your OTP for verification is : ' + otp,
-            from: process.env.twilioNumber, // Twilio number
-            to: req.body.phoneNumber // Mobile number
-        })
-        .then(message =>
-            res.status(200).send({
-                message
+    User.findOne({
+        username: req.body.username
+    }).exec((err, user) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        }
+        if (!user) {
+            res.status(404).send({ message: 'User Not Found' });
+            return;
+        }
+        otp = OTP();
+        client.messages
+            .create({
+                body: 'Your OTP for verification is : ' + otp,
+                from: process.env.twilioNumber, // Twilio number
+                to: user.number // Mobile number
             })
-        );
+            .then(message =>
+                res.status(200).send({
+                    message
+                })
+            );
+    })
+
 }
 
 exports.validateOTP = (req, res) => {
