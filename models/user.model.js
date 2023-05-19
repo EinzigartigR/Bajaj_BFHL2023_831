@@ -5,6 +5,7 @@ const User = mongoose.model(
   new mongoose.Schema({
     username: String,
     email: String,
+    phone: String,
     password: String,
   })
 );
