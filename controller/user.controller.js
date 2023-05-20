@@ -29,22 +29,24 @@ exports.signIn = (req, res) => {
 
 }
 
-exports.add_data = async function(req,res){
-    const bajaj = await new Bajaj({
-        status: req.body.status,
-    userid: req.body.userid,
-    college_email: req.body.college_email,
-    college_roll: req.body.college_roll,
-    nums: req.body.nums,
-    alphas: req.body.alphas,
-    })
-    bajaj.save(err => {
-        if (err) {
-          res.status(500).send({ message: err });
-        }
-        res.send({ message: "Ananya was registered successfully!" });
-      });
-}
+exports.add_data = async function(req, res) {
+  try {
+    const bajaj = new Bajaj({
+      status: req.body.status,
+      userid: req.body.userid,
+      college_email: req.body.college_email,
+      college_roll: req.body.college_roll,
+      nums: req.body.nums,
+      alphas: req.body.alphas,
+    });
+
+    await bajaj.save();
+    res.send({ message: "Ananya was registered successfully!" });
+  } catch (err) {
+    res.status(500).send({ message: err.message });
+  }
+};
+
 
 exports.get_data = async function(req, res) {
     try {
