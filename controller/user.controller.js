@@ -5,18 +5,19 @@ const Bajaj = require('../models/bajaj.model');
 require('dotenv').config();
 
 exports.signUp = async function (req, res) {
-    const user = await new User({
-        username: req.body.username,
-        email: req.body.email,
-        phone: req.body.phone,
-        password: bcrypt.hashSync(req.body.password, 8),
-    })
-    user.save(err => {
-        if (err) {
-            res.status(500).send({ message: err });
-        }
-        res.send({ message: "User was registered successfully!" });
-    });
+  try {
+      const user = new User({
+          username: req.body.username,
+          email: req.body.email,
+          phone: req.body.phone,
+          password: bcrypt.hashSync(req.body.password, 8),
+      });
+
+      await user.save();
+      res.send({ message: "User was registered successfully!" });
+  } catch (err) {
+      res.status(500).send({ message: err });
+  }
 }
 
 exports.signIn = (req, res) => {
